@@ -1,0 +1,2683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Archival</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%232A5040' /%3E%3Cstop offset='100%25' stop-color='%2314281F' /%3E%3C/linearGradient%3E%3ClinearGradient id='wave' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23E5CC82' /%3E%3Cstop offset='100%25' stop-color='%23C8A84B' /%3E%3C/linearGradient%3E%3Cfilter id='glow' x='-20%25' y='-20%25' width='140%25' height='140%25'%3E%3CfeDropShadow dx='0' dy='12' stdDeviation='16' flood-color='%23000' flood-opacity='0.4'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='512' height='512' rx='116' fill='url(%23bg)' /%3E%3Crect x='4' y='4' width='504' height='504' rx='112' fill='none' stroke='%23ffffff' stroke-opacity='0.08' stroke-width='6' /%3E%3Cg filter='url(%23glow)'%3E%3Crect x='156' y='210' width='36' height='92' rx='18' fill='url(%23wave)' /%3E%3Crect x='238' y='130' width='36' height='252' rx='18' fill='url(%23wave)' /%3E%3Crect x='320' y='180' width='36' height='152' rx='18' fill='url(%23wave)' /%3E%3C/g%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1E3A2F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --bg-body: #F7F4EF;
+  --bg-surface: #FFFFFF;
+  --bg-surface-hover: #F0EDE8;
+  --bg-elevated: rgba(255,255,255,0.95);
+  --text-primary: #1A1612;
+  --text-secondary: #6B6560;
+  --primary: #1E3A2F;
+  --primary-light: #2A5040;
+  --accent: #C8A84B;
+  --accent-soft: rgba(200,168,75,0.12);
+  --border: #E4E0D8;
+  --border-light: #EDE9E2;
+  --shadow: 0 4px 24px rgba(26,22,18,0.06);
+  --shadow-hover: 0 10px 40px rgba(26,22,18,0.13);
+  --shadow-player: 0 20px 60px rgba(26,22,18,0.12), 0 4px 16px rgba(26,22,18,0.08);
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-heading: 'Cormorant Garamond', serif;
+  --font-ui: 'DM Sans', sans-serif;
+  --player-bg: rgba(255,255,255,0.97);
+  --player-border: #E4E0D8;
+  --range-track: #E4E0D8;
+  --track-fill: #C8A84B;
+}
+
+[data-theme="dark"] {
+  --bg-body: #0E1210;
+  --bg-surface: #171E1B;
+  --bg-surface-hover: #1F2A26;
+  --bg-elevated: rgba(23,30,27,0.97);
+  --text-primary: #EAE6DF;
+  --text-secondary: #8A9490;
+  --primary: #3D7A60;
+  --primary-light: #4E9476;
+  --accent: #C8A84B;
+  --accent-soft: rgba(200,168,75,0.1);
+  --border: #252F2C;
+  --border-light: #1E2824;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-hover: 0 10px 40px rgba(0,0,0,0.6);
+  --shadow-player: 0 20px 60px rgba(0,0,0,0.5), 0 4px 16px rgba(0,0,0,0.3);
+  --player-bg: rgba(23,30,27,0.97);
+  --player-border: #252F2C;
+  --range-track: #252F2C;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-ui);
+  background: var(--bg-body);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+  transition: background 0.4s ease, color 0.4s ease;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(200,168,75,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 90%, rgba(30,58,47,0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.app-wrap { position: relative; z-index: 1; max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+
+/* ── HEADER ── */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 0 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--primary);
+  font-family: var(--font-heading);
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+[data-theme="dark"] .logo { color: var(--text-primary); }
+
+.logo-icon {
+  width: 36px; height: 36px;
+  background: var(--primary);
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+.header-actions { display: flex; gap: 8px; align-items: center; }
+
+.icon-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 0.95rem;
+  transition: var(--transition);
+  font-family: var(--font-ui);
+}
+
+.icon-btn:hover { color: var(--primary); border-color: var(--accent); background: var(--accent-soft); }
+
+/* ── PLAYER ── */
+.player-section { padding: 8px 0 32px; }
+
+.player-wrap {
+  background: var(--player-bg);
+  border: 1px solid var(--player-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-player);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  position: sticky;
+  top: 16px;
+  z-index: 100;
+  transition: var(--transition);
+}
+
+.player-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .player-layout { grid-template-columns: 1fr 1.1fr; gap: 32px; }
+}
+
+.player-info { display: flex; flex-direction: column; gap: 4px; }
+
+.now-playing-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.track-title {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+@media (min-width: 768px) { .track-title { font-size: 2.1rem; } }
+
+.track-collection {
+  font-size: 0.9rem;
+  color: var(--accent);
+  font-weight: 500;
+  margin-top: 2px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.track-collection:hover {
+  text-decoration: underline;
+  color: var(--primary);
+}
+
+.track-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.meta-chip {
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  background: var(--bg-surface-hover);
+}
+
+.track-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+
+.action-btn {
+  background: none; border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 6px;
+  border-radius: 8px;
+  transition: var(--transition);
+}
+
+.action-btn:hover { color: var(--primary); transform: scale(1.1); }
+.action-btn.is-fav { color: #e25c5c; }
+.action-btn.is-fav:hover { color: #c94040; }
+
+/* Progress + Controls */
+.player-controls { display: flex; flex-direction: column; gap: 12px; }
+
+.progress-wrap { width: 100%; position: relative; }
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 7px;
+  border-radius: 7px;
+  background: var(--range-track);
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--player-bg);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  transition: transform 0.15s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.25); }
+
+input[type="range"]::-moz-range-thumb {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--player-bg);
+  cursor: pointer;
+}
+
+.time-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.ctrl-btn {
+  background: none; border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 1.15rem;
+  padding: 10px;
+  border-radius: 50%;
+  transition: var(--transition);
+}
+
+.ctrl-btn:hover { color: var(--primary); background: var(--accent-soft); }
+.ctrl-btn.active { color: var(--accent) !important; }
+
+.play-btn {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 1.3rem;
+  box-shadow: 0 6px 20px rgba(30,58,47,0.35);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+[data-theme="dark"] .play-btn {
+  background: var(--primary);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+.play-btn:hover { transform: scale(1.07); box-shadow: 0 8px 28px rgba(30,58,47,0.45); }
+.play-btn:active { transform: scale(0.96); }
+
+/* ── SEARCH ── */
+.search-section { margin: 8px 0 24px; }
+
+.search-wrap {
+  position: relative;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.search-icon {
+  position: absolute;
+  left: 18px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 13px 20px 13px 46px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: var(--transition);
+}
+
+.search-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft), var(--shadow);
+}
+
+.search-input::placeholder { color: var(--text-secondary); }
+
+/* ── TABS ── */
+.tabs-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  padding: 9px 22px;
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.tab-btn:hover { color: var(--primary); background: var(--bg-surface); }
+
+.tab-btn.active {
+  background: var(--bg-surface);
+  border-color: var(--border);
+  color: var(--primary);
+  box-shadow: var(--shadow);
+}
+
+[data-theme="dark"] .tab-btn.active { color: var(--text-primary); }
+
+/* ── CONTENT SECTIONS ── */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.section-count {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 3px 12px;
+}
+
+/* ── FOCUSED COLLECTION VIEW ── */
+.collection-detail-wrap { animation: modalSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.back-nav { margin-bottom: 24px; display: flex; align-items: center; }
+.back-btn { 
+  background: transparent; 
+  border: none; 
+  color: var(--text-secondary); 
+  font-family: var(--font-ui); 
+  font-size: 0.95rem; 
+  font-weight: 500; 
+  cursor: pointer; 
+  display: inline-flex; 
+  align-items: center; 
+  gap: 8px; 
+  transition: var(--transition); 
+  padding: 8px 16px 8px 0; 
+}
+.back-btn:hover { color: var(--primary); transform: translateX(-3px); }
+.collection-detail-header { 
+  display: flex; 
+  gap: 24px; 
+  align-items: flex-end; 
+  margin-bottom: 32px; 
+  flex-wrap: wrap; 
+}
+.collection-detail-thumb { 
+  width: 180px; 
+  height: 180px; 
+  border-radius: var(--radius-lg); 
+  background: linear-gradient(135deg, var(--primary), var(--primary-light)); 
+  display: grid; 
+  place-items: center; 
+  color: var(--accent); 
+  font-size: 3.5rem; 
+  flex-shrink: 0; 
+  overflow: hidden; 
+  box-shadow: var(--shadow-hover); 
+}
+.collection-detail-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.collection-detail-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; padding-bottom: 8px; }
+.collection-detail-type { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.collection-detail-title { 
+  font-family: var(--font-heading); 
+  font-size: 2.8rem; 
+  font-weight: 700; 
+  color: var(--text-primary); 
+  line-height: 1.1; 
+  letter-spacing: -0.02em; 
+  word-wrap: break-word; 
+}
+.collection-detail-meta { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+  font-size: 0.9rem; 
+  color: var(--text-secondary); 
+  flex-wrap: wrap; 
+}
+.collection-detail-actions { display: flex; gap: 12px; margin-top: 16px; align-items: center; }
+
+/* ── PREMIUM INPUT ── */
+.premium-input {
+  width: 100%;
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--bg-body);
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: var(--transition);
+}
+.premium-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+  background: var(--bg-surface);
+}
+
+
+/* ── IMPORT BOX ── */
+.import-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  margin-bottom: 32px;
+  box-shadow: var(--shadow);
+}
+
+.import-title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 14px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.import-title i { color: var(--accent); font-size: 0.95rem; }
+
+.import-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.import-input {
+  flex: 1;
+  min-width: 220px;
+  padding: 11px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--bg-body);
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: var(--transition);
+}
+
+.import-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.import-input::placeholder { color: var(--text-secondary); }
+
+.btn-primary {
+  padding: 11px 22px;
+  border-radius: var(--radius-md);
+  background: var(--primary);
+  color: white;
+  border: none;
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(30,58,47,0.3); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+.btn-secondary {
+  padding: 11px 22px;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition);
+}
+
+.btn-secondary:hover { border-color: var(--accent); color: var(--primary); background: var(--accent-soft); }
+
+.import-hint {
+  margin-top: 10px;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.import-hint a { color: var(--accent); text-decoration: none; }
+.import-hint a:hover { text-decoration: underline; }
+
+/* ── COLLECTIONS GRID ── */
+.collections-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.collection-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.collection-card::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 3px; height: 100%;
+  background: var(--accent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.collection-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--accent);
+}
+
+.collection-card:hover::after { opacity: 1; }
+.collection-card.active { border-color: var(--primary); background: var(--bg-surface-hover); }
+.collection-card.active::after { opacity: 1; background: var(--primary); }
+
+.collection-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.collection-thumb {
+  width: 52px; height: 52px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.collection-thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+.collection-info { flex: 1; min-width: 0; }
+
+.collection-name {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.collection-subject {
+  font-size: 0.78rem;
+  color: var(--accent);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.collection-stats {
+  display: flex;
+  gap: 14px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 10px;
+}
+
+.collection-stat { display: flex; align-items: center; gap: 4px; }
+
+.collection-actions {
+  position: absolute;
+  top: 14px; right: 14px;
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.collection-card:hover .collection-actions { opacity: 1; }
+
+.card-action-btn {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 0.75rem;
+  transition: var(--transition);
+}
+
+.card-action-btn:hover { color: var(--primary); border-color: var(--accent); }
+.card-action-btn.danger:hover { color: #e25c5c; border-color: #e25c5c; }
+
+/* ── TRACKS LIST ── */
+.tracks-section { margin-bottom: 40px; }
+
+.tracks-list { display: flex; flex-direction: column; gap: 6px; }
+
+.track-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.track-item:hover { background: var(--bg-surface-hover); border-color: var(--accent); transform: translateX(2px); }
+.track-item.active { border-color: var(--primary); background: var(--bg-surface-hover); }
+.track-item.active .track-num { display: none; }
+.track-item.active .track-play-indicator { display: flex; }
+
+.track-num {
+  width: 28px;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.track-play-indicator {
+  display: none;
+  width: 28px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.playing-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 16px;
+}
+
+.playing-bar {
+  width: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  animation: barBounce 0.8s ease-in-out infinite alternate;
+}
+
+.playing-bar:nth-child(2) { animation-delay: 0.2s; }
+.playing-bar:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes barBounce {
+  from { height: 4px; }
+  to { height: 14px; }
+}
+
+.track-thumb {
+  width: 40px; height: 40px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  font-size: 0.8rem;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.track-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.track-text { flex: 1; min-width: 0; }
+
+.track-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+
+.track-artist {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-duration {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.track-fav-btn {
+  background: none; border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 5px;
+  border-radius: 6px;
+  transition: var(--transition);
+  flex-shrink: 0;
+  opacity: 0;
+}
+
+.track-item:hover .track-fav-btn,
+.track-fav-btn.is-fav { opacity: 1; }
+.track-fav-btn:hover { color: #e25c5c; transform: scale(1.15); }
+.track-fav-btn.is-fav { color: #e25c5c; }
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  text-align: center;
+}
+
+.empty-icon {
+  width: 72px; height: 72px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  display: grid;
+  place-items: center;
+  font-size: 1.8rem;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+
+.empty-title {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.empty-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  max-width: 340px;
+  line-height: 1.7;
+}
+
+/* ── LOADING STATE ── */
+.loading-overlay {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  gap: 16px;
+}
+
+.loading-overlay.active { display: flex; }
+
+.spinner {
+  width: 36px; height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* ── PAGINATION ── */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 0 48px;
+}
+
+.page-btn {
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.page-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--primary); }
+.page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.page-info { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); }
+
+/* ── MODALS ── */
+.modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 9000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: backdropFadeIn 0.2s ease;
+}
+
+.modal-backdrop.open { display: flex; }
+
+@keyframes backdropFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-hover);
+  animation: modalSlideUp 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.modal-title {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.modal-close {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+
+.modal-close:hover { color: var(--text-primary); border-color: var(--accent); }
+
+/* ── TOAST NOTIFICATIONS ── */
+.toast-container {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  pointer-events: none;
+}
+
+.toast {
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-ui);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: white;
+  background: var(--primary);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+  animation: toastIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toast.success { background: #2A7A55; }
+.toast.error { background: #C0392B; }
+.toast.info { background: var(--primary); }
+.toast.warning { background: #C8A84B; color: #1A1612; }
+
+@keyframes toastIn { from { opacity: 0; transform: translateY(16px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes toastOut { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(10px) scale(0.95); } }
+
+/* ── SHARE/IMPORT PREVIEW ── */
+.share-preview-collections { display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
+
+.share-preview-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-body);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.share-preview-item:hover { border-color: var(--accent); background: var(--accent-soft); }
+.share-preview-item.selected { border-color: var(--primary); background: var(--accent-soft); }
+
+.share-preview-item input[type="checkbox"] { accent-color: var(--primary); }
+
+.share-preview-thumb {
+  width: 38px; height: 38px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.share-preview-info { flex: 1; min-width: 0; }
+.share-preview-name { font-size: 0.88rem; font-weight: 600; color: var(--text-primary); }
+.share-preview-tracks { font-size: 0.75rem; color: var(--text-secondary); }
+
+.share-link-box {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  align-items: center;
+}
+
+.share-link-input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-body);
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  outline: none;
+}
+
+/* ── JSON MODAL ── */
+.json-view {
+  background: var(--bg-body);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-family: 'Courier New', monospace;
+  max-height: 320px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.5;
+  margin: 16px 0;
+}
+
+/* ── CONFIRM DIALOG ── */
+.confirm-dialog .modal { max-width: 380px; }
+.confirm-message { font-size: 0.9rem; color: var(--text-secondary); margin: 12px 0 20px; line-height: 1.6; }
+.confirm-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .player-wrap { top: 0; border-radius: 0 0 var(--radius-lg) var(--radius-lg); padding: 16px; }
+  .collections-grid { grid-template-columns: 1fr; }
+  .tabs-row { gap: 6px; }
+  .tab-btn { padding: 8px 16px; font-size: 0.82rem; }
+  .track-title { font-size: 1.4rem; }
+  .collection-detail-header { flex-direction: column; align-items: center; text-align: center; gap: 16px; }
+  .collection-detail-meta { justify-content: center; }
+  .collection-detail-actions { justify-content: center; }
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+/* ── IMPORT PREVIEW IN MODAL ── */
+.import-track-preview { max-height: 260px; overflow-y: auto; margin-top: 16px; }
+.import-track-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.import-track-row:last-child { border-bottom: none; }
+.import-track-name { flex: 1; color: var(--text-primary); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.import-track-badge {
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+.badge-new { background: rgba(42,122,85,0.15); color: #2A7A55; }
+.badge-dup { background: rgba(200,168,75,0.15); color: #C8A84B; }
+.badge-skipped { background: var(--bg-surface-hover); color: var(--text-secondary); }
+
+/* ── PLAYER LOADING STATE ── */
+.player-loading { animation: playerPulse 1.5s ease-in-out infinite; }
+@keyframes playerPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+/* ── SHARE PROMPT BADGE ── */
+.shared-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+/* ── COLLECTION SELECT CHECK ── */
+.col-select-wrap {
+  position: absolute;
+  top: 14px; left: 14px;
+}
+
+.col-checkbox {
+  width: 18px; height: 18px;
+  accent-color: var(--primary);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.collection-card:hover .col-checkbox,
+.collection-card.selected .col-checkbox { opacity: 1; }
+.collection-card.selected { border-color: var(--primary); }
+
+/* footer */
+/* ── PREMIUM GLASSMORPHIC FOOTER ── */
+.app-footer {
+  text-align: center;
+  padding: 24px 28px;
+  margin-top: 48px;
+  margin-bottom: 24px;
+  background: var(--player-bg);
+  border: 1px solid var(--player-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  transition: var(--transition);
+}
+
+@media (min-width: 768px) {
+  .app-footer {
+    flex-direction: row;
+    padding: 20px 32px;
+  }
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+@media (max-width: 767px) {
+  .footer-info {
+    text-align: center;
+  }
+}
+
+.footer-app-title {
+  font-family: var(--font-ui);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.footer-author {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.footer-author span {
+  color: var(--accent);
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 0 !important; /* إلغاء التباعد القديم */
+}
+
+.footer-glass-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-secondary);
+  display: grid;
+  place-items: center;
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.footer-glass-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+}
+
+.footer-glass-btn.linkedin:hover {
+  color: #0077B5;
+  background: rgba(0, 119, 181, 0.08);
+  border-color: #0077B5;
+}
+
+.footer-glass-btn.github:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface-hover);
+  border-color: var(--text-primary);
+}
+
+.footer-glass-btn.archive:hover {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+</style>
+</head>
+<body>
+
+<div class="app-wrap">
+  <header>
+    <a href="#" class="logo">
+      <div class="logo-icon"><i class="fas fa-archive"></i></div>
+      Archival
+    </a>
+    <div class="header-actions">
+      <button class="icon-btn" id="shareBtn" title="Share Collections"><i class="fas fa-share-nodes"></i></button>
+      <button class="icon-btn" id="jsonBtn" title="View Library JSON"><i class="fas fa-code"></i></button>
+      <button class="icon-btn" id="themeBtn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
+    </div>
+  </header>
+
+  <section class="player-section">
+    <div class="player-wrap" id="playerWrap">
+      <div class="player-layout">
+        <div class="player-info">
+          <div class="now-playing-label"><i class="fas fa-waveform-lines"></i> Now Playing</div>
+          <h2 class="track-title" id="playerTitle">Select a track</h2>
+          <div class="track-collection" id="playerCollection">Import a collection to begin</div>
+          <div class="track-meta-row" id="playerMeta"></div>
+          <div class="track-actions">
+            <button class="action-btn" id="favBtn" title="Favorite"><i class="far fa-heart"></i></button>
+            <button class="action-btn" id="downloadBtn" title="Open in Archive"><i class="fas fa-arrow-up-right-from-square"></i></button>
+            <button class="action-btn" id="shuffleBtn" title="Shuffle"><i class="fas fa-shuffle"></i></button>
+          </div>
+        </div>
+        <div class="player-controls">
+          <div class="progress-wrap">
+            <input type="range" id="progressBar" min="0" max="100" step="0.1" value="0">
+          </div>
+          <div class="time-row">
+            <span id="currentTime">0:00</span>
+            <span id="duration">0:00</span>
+          </div>
+          <div class="controls-row">
+            <button class="ctrl-btn" id="repeatBtn" title="Repeat"><i class="fas fa-repeat"></i></button>
+            <button class="ctrl-btn" id="prevBtn" title="Previous"><i class="fas fa-backward-step"></i></button>
+            <button class="play-btn" id="playBtn"><i class="fas fa-play"></i></button>
+            <button class="ctrl-btn" id="nextBtn" title="Next"><i class="fas fa-forward-step"></i></button>
+            <button class="ctrl-btn" id="volBtn" title="Volume"><i class="fas fa-volume-high"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="search-section">
+    <div class="search-wrap">
+      <i class="fas fa-magnifying-glass search-icon"></i>
+      <input type="search" class="search-input" id="searchInput" placeholder="Search tracks, collections, artists…">
+    </div>
+  </div>
+
+  <div class="tabs-row">
+    <button class="tab-btn active" data-tab="library">Library</button>
+    <button class="tab-btn" data-tab="collections">Collections</button>
+    <button class="tab-btn" data-tab="favorites">Favorites</button>
+    <button class="tab-btn" data-tab="import">Import</button>
+  </div>
+
+  <main id="mainContent"></main>
+
+<footer class="app-footer">
+    <div class="footer-info">
+      <div class="footer-app-title">Archival — Internet Archive Audio Collection Manager</div>
+      <div class="footer-author">Made with passion by <span>AbdulRahman Khalid</span></div>
+    </div>
+    <div class="footer-links">
+      <a href="https://linkedin.com/in/abdulrahman-khalid-arks" target="_blank" class="footer-glass-btn linkedin" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      <a href="https://github.com/abdulrahman-khalid-elhady" target="_blank" class="footer-glass-btn github" title="GitHub"><i class="fab fa-github"></i></a>
+      <a href="https://archive.org" target="_blank" class="footer-glass-btn archive" title="Internet Archive"><i class="fas fa-globe"></i></a>
+    </div>
+  </footer>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="modal-backdrop" id="jsonModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Library JSON</h3>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="btn-secondary" id="exportJsonBtn" style="padding:6px 14px;font-size:0.8rem;"><i class="fas fa-download"></i> Export</button>
+        <button class="modal-close" data-close="jsonModal"><i class="fas fa-times"></i></button>
+      </div>
+    </div>
+    <pre class="json-view" id="jsonView"></pre>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="shareModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Share Collections</h3>
+      <button class="modal-close" data-close="shareModal"><i class="fas fa-times"></i></button>
+    </div>
+    <p style="font-size:0.86rem;color:var(--text-secondary);margin-bottom:16px;">
+      Select collections to share. Recipients can preview and import them into their library.
+    </p>
+    <div id="shareCollectionsList" class="share-preview-collections"></div>
+    <div class="share-link-box" id="shareLinkBox" style="display:none;">
+      <input type="text" class="share-link-input" id="shareLinkInput" readonly>
+      <button class="btn-primary" id="copyLinkBtn" style="padding:10px 16px;">
+        <i class="fas fa-copy"></i> Copy
+      </button>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
+      <button class="btn-primary" id="generateLinkBtn"><i class="fas fa-link"></i> Generate Link</button>
+      <button class="btn-secondary" id="selectAllShareBtn">Select All</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="importPreviewModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="importPreviewTitle">Import Preview</h3>
+      <button class="modal-close" data-close="importPreviewModal"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="importPreviewContent"></div>
+    <div style="display:flex;gap:10px;margin-top:24px;justify-content:flex-end;">
+      <button class="btn-secondary" data-close="importPreviewModal">Cancel</button>
+      <button class="btn-primary" id="confirmImportBtn"><i class="fas fa-file-import"></i> Import Collection</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="confirmDialog">
+  <div class="modal" style="max-width:380px;">
+    <div class="modal-header">
+      <h3 class="modal-title" id="confirmTitle">Confirm</h3>
+      <button class="modal-close" data-close="confirmDialog"><i class="fas fa-times"></i></button>
+    </div>
+    <p class="confirm-message" id="confirmMessage"></p>
+    <div class="confirm-actions">
+      <button class="btn-secondary" data-close="confirmDialog">Cancel</button>
+      <button class="btn-primary" id="confirmOkBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="sharedImportModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Shared Collections</h3>
+      <button class="modal-close" data-close="sharedImportModal"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="shared-badge"><i class="fas fa-share-nodes"></i> Shared with you</div>
+    <p style="font-size:0.86rem;color:var(--text-secondary);margin-bottom:16px;">
+      Someone shared these collections with you. Select which ones to import.
+    </p>
+    <div id="sharedImportList" class="share-preview-collections"></div>
+    <div style="display:flex;gap:10px;margin-top:20px;justify-content:flex-end;">
+      <button class="btn-secondary" data-close="sharedImportModal">Dismiss</button>
+      <button class="btn-primary" id="importSharedBtn"><i class="fas fa-file-import"></i> Import Selected</button>
+    </div>
+  </div>
+</div>
+
+<audio id="audioPlayer"></audio>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATABASE — IndexedDB
+// ═══════════════════════════════════════════════
+const DB = (() => {
+  const DB_NAME = 'archival_db';
+  const DB_VERSION = 2;
+  let db = null;
+
+  const STORES = {
+    collections: 'collections',
+    tracks: 'tracks',
+    favorites: 'favorites',
+    settings: 'settings'
+  };
+
+  function open() {
+    return new Promise((resolve, reject) => {
+      if (db) { resolve(db); return; }
+      const req = indexedDB.open(DB_NAME, DB_VERSION);
+      req.onupgradeneeded = e => {
+        const d = e.target.result;
+        if (!d.objectStoreNames.contains(STORES.collections)) {
+          const cs = d.createObjectStore(STORES.collections, { keyPath: 'id' });
+          cs.createIndex('identifier', 'identifier', { unique: true });
+        }
+        if (!d.objectStoreNames.contains(STORES.tracks)) {
+          const ts = d.createObjectStore(STORES.tracks, { keyPath: 'id' });
+          ts.createIndex('collectionId', 'collectionId', { unique: false });
+          ts.createIndex('identifier', 'identifier', { unique: false });
+        }
+        if (!d.objectStoreNames.contains(STORES.favorites)) {
+          d.createObjectStore(STORES.favorites, { keyPath: 'trackId' });
+        }
+        if (!d.objectStoreNames.contains(STORES.settings)) {
+          d.createObjectStore(STORES.settings, { keyPath: 'key' });
+        }
+      };
+      req.onsuccess = e => { db = e.target.result; resolve(db); };
+      req.onerror = e => reject(e.target.error);
+    });
+  }
+
+  function tx(storeName, mode = 'readonly') {
+    return db.transaction(storeName, mode).objectStore(storeName);
+  }
+
+  function put(storeName, data) {
+    return open().then(() => new Promise((res, rej) => {
+      const req = tx(storeName, 'readwrite').put(data);
+      req.onsuccess = () => res(req.result);
+      req.onerror = e => rej(e.target.error);
+    }));
+  }
+
+  function getAll(storeName) {
+    return open().then(() => new Promise((res, rej) => {
+      const req = tx(storeName).getAll();
+      req.onsuccess = () => res(req.result);
+      req.onerror = e => rej(e.target.error);
+    }));
+  }
+
+  function getByIndex(storeName, indexName, value) {
+    return open().then(() => new Promise((res, rej) => {
+      const req = tx(storeName).index(indexName).getAll(value);
+      req.onsuccess = () => res(req.result);
+      req.onerror = e => rej(e.target.error);
+    }));
+  }
+
+  function remove(storeName, key) {
+    return open().then(() => new Promise((res, rej) => {
+      const req = tx(storeName, 'readwrite').delete(key);
+      req.onsuccess = () => res();
+      req.onerror = e => rej(e.target.error);
+    }));
+  }
+
+  function getSetting(key, def = null) {
+    return open().then(() => new Promise((res, rej) => {
+      const req = tx(STORES.settings).get(key);
+      req.onsuccess = () => res(req.result ? req.result.value : def);
+      req.onerror = e => rej(e.target.error);
+    }));
+  }
+
+  function setSetting(key, value) {
+    return put(STORES.settings, { key, value });
+  }
+
+  return { open, put, getAll, getByIndex, remove, getSetting, setSetting, STORES };
+})();
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+const state = {
+  collections: [],
+  tracks: [],
+  favorites: new Set(),
+  currentTrack: null,
+  currentTrackIndex: -1,
+  queueTracks: [],
+  isPlaying: false,
+  playbackMode: 'list', // list | repeat | shuffle
+  theme: 'light',
+  tab: 'library',
+  focusedCollectionId: null, // Tracks currently viewed collection
+  page: 1,
+  pageSize: 40,
+  searchQuery: '',
+  importPending: null
+};
+
+// ═══════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════
+function uid() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+}
+
+function formatTime(s) {
+  if (!s || isNaN(s)) return '0:00';
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return `${m}:${sec < 10 ? '0' : ''}${sec}`;
+}
+
+function cleanTitle(name) {
+  return name
+    .replace(/\.(mp3|ogg|flac|wav|m4a|aac|opus)$/i, '')
+    .replace(/[_-]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// function normalizeTitle(t) {
+//   return t.toLowerCase().replace(/[^a-z0-9]/g, '');
+// }
+
+function normalizeTitle(t) {
+  return t.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+}
+
+function preferredFormat(files) {
+  // const mp3s = files.filter(f => f.name && f.name.toLowerCase().endsWith('.mp3'));
+  // if (mp3s.length) return mp3s;
+  // const ogg = files.filter(f => f.name && f.name.toLowerCase().endsWith('.ogg'));
+  // if (ogg.length) return ogg;
+  return files;
+}
+
+function toast(msg, type = 'info', duration = 3000) {
+  const container = document.getElementById('toastContainer');
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', warning: 'fa-triangle-exclamation', info: 'fa-circle-info' };
+  el.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i> ${msg}`;
+  container.appendChild(el);
+  setTimeout(() => {
+    el.style.animation = 'toastOut 0.3s ease forwards';
+    setTimeout(() => el.remove(), 300);
+  }, duration);
+}
+
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function confirm(title, message) {
+  return new Promise(resolve => {
+    document.getElementById('confirmTitle').textContent = title;
+    document.getElementById('confirmMessage').textContent = message;
+    openModal('confirmDialog');
+    const okBtn = document.getElementById('confirmOkBtn');
+    const cleanup = (result) => {
+      closeModal('confirmDialog');
+      okBtn.onclick = null;
+      resolve(result);
+    };
+    okBtn.onclick = () => cleanup(true);
+    document.querySelector('#confirmDialog [data-close]').onclick = () => cleanup(false);
+  });
+}
+
+// ═══════════════════════════════════════════════
+// INTERNET ARCHIVE API
+// ═══════════════════════════════════════════════
+async function fetchArchiveCollection(identifier) {
+  identifier = identifier.trim();
+  // Support full URLs
+  const match = identifier.match(/archive\.org\/(?:details|download)\/([^/?#\s]+)/i);
+  if (match) identifier = match[1];
+
+  const metaUrl = `https://archive.org/metadata/${encodeURIComponent(identifier)}`;
+  const resp = await fetch(metaUrl);
+  if (!resp.ok) throw new Error(`Archive API returned ${resp.status}`);
+  const data = await resp.json();
+  if (!data || !data.metadata) throw new Error('Item not found on Internet Archive');
+
+  const meta = data.metadata;
+  const files = data.files || [];
+
+  // Filter audio files
+  const audioExts = /\.(mp3|ogg|flac|wav|m4a|aac|opus)$/i;
+  // const audioFiles = files.filter(f => f.name && audioExts.test(f.name) && f.source !== 'derivative');
+  const audioFiles = files.filter(f => f.name && audioExts.test(f.name));
+
+  // Prefer mp3 / better formats, deduplicate by normalized title
+  const preferred = preferredFormat(audioFiles.length ? audioFiles : files.filter(f => audioExts.test(f.name || '')));
+
+  // Deduplicate by normalized title
+  const seen = new Map();
+  const deduped = [];
+  for (const f of preferred) {
+    const title = cleanTitle(f.name || f.title || 'Unknown');
+    const key = normalizeTitle(title);
+    if (!seen.has(key)) {
+      seen.set(key, true);
+      deduped.push(f);
+    }
+  }
+
+  const thumbId = meta.identifier || identifier;
+
+  return {
+    identifier,
+    title: meta.title || identifier,
+    creator: Array.isArray(meta.creator) ? meta.creator.join(', ') : (meta.creator || ''),
+    subject: Array.isArray(meta.subject) ? meta.subject.slice(0, 3).join(', ') : (meta.subject || ''),
+    description: typeof meta.description === 'string' ? meta.description.slice(0, 300) : '',
+    mediatype: meta.mediatype || 'audio',
+    thumbnail: `https://archive.org/services/img/${thumbId}`,
+    audioFiles: deduped.map(f => ({
+      name: f.name,
+      title: cleanTitle(f.title || f.name || ''),
+      size: f.size,
+      length: f.length,
+      creator: f.creator || meta.creator || '',
+      url: `https://archive.org/download/${identifier}/${encodeURIComponent(f.name)}`
+    })),
+    itemUrl: `https://archive.org/details/${identifier}`
+  };
+}
+
+// ═══════════════════════════════════════════════
+// LIBRARY OPERATIONS
+// ═══════════════════════════════════════════════
+async function loadLibrary() {
+  state.collections = await DB.getAll(DB.STORES.collections);
+  state.tracks = await DB.getAll(DB.STORES.tracks);
+  const favs = await DB.getAll(DB.STORES.favorites);
+  state.favorites = new Set(favs.map(f => f.trackId));
+}
+
+async function importCollection(archiveData, customTitle) {
+  // Check for duplicate collection
+  const existing = state.collections.find(c => c.identifier === archiveData.identifier);
+  let collectionId;
+  let isNew = false;
+
+  if (existing) {
+    collectionId = existing.id;
+    toast(`Collection "${existing.title}" already exists — merging new tracks`, 'warning');
+  } else {
+    collectionId = uid();
+    isNew = true;
+  }
+
+  const finalTitle = customTitle || archiveData.title;
+
+  const collection = {
+    id: collectionId,
+    identifier: archiveData.identifier,
+    title: finalTitle,
+    creator: archiveData.creator,
+    subject: archiveData.subject,
+    description: archiveData.description,
+    thumbnail: archiveData.thumbnail,
+    itemUrl: archiveData.itemUrl,
+    trackCount: 0,
+    importedAt: Date.now()
+  };
+
+  // Existing track titles in this collection for dedup
+  const existingTracks = state.tracks.filter(t => t.collectionId === collectionId);
+  const existingKeys = new Set(existingTracks.map(t => normalizeTitle(t.title)));
+
+  let added = 0, skipped = 0;
+  const newTracks = [];
+
+  for (const f of archiveData.audioFiles) {
+    const key = normalizeTitle(f.title || f.name);
+    if (existingKeys.has(key)) { skipped++; continue; }
+    existingKeys.add(key);
+    added++;
+    newTracks.push({
+      id: uid(),
+      collectionId,
+      identifier: archiveData.identifier,
+      title: f.title || cleanTitle(f.name),
+      artist: f.creator || archiveData.creator || '',
+      url: f.url,
+      duration: f.length ? parseFloat(f.length) : 0,
+      size: f.size,
+      filename: f.name,
+      importedAt: Date.now()
+    });
+  }
+
+  collection.trackCount = existingTracks.length + added;
+  await DB.put(DB.STORES.collections, collection);
+  for (const t of newTracks) await DB.put(DB.STORES.tracks, t);
+
+  await loadLibrary();
+  return { added, skipped, isNew, collectionId };
+}
+
+async function deleteCollection(collectionId) {
+  const tracks = state.tracks.filter(t => t.collectionId === collectionId);
+  await DB.remove(DB.STORES.collections, collectionId);
+  for (const t of tracks) {
+    await DB.remove(DB.STORES.tracks, t.id);
+    await DB.remove(DB.STORES.favorites, t.id);
+  }
+  if (state.currentTrack && state.currentTrack.collectionId === collectionId) {
+    stopPlayback();
+  }
+  if (state.focusedCollectionId === collectionId) {
+    state.focusedCollectionId = null;
+    state.tab = 'collections';
+  }
+  await loadLibrary();
+}
+
+async function toggleFavorite(trackId) {
+  if (state.favorites.has(trackId)) {
+    state.favorites.delete(trackId);
+    await DB.remove(DB.STORES.favorites, trackId);
+  } else {
+    state.favorites.add(trackId);
+    await DB.put(DB.STORES.favorites, { trackId });
+  }
+}
+
+// ═══════════════════════════════════════════════
+// AUDIO PLAYER
+// ═══════════════════════════════════════════════
+const audio = document.getElementById('audioPlayer');
+const playBtn = document.getElementById('playBtn');
+const progressBar = document.getElementById('progressBar');
+const currentTimeEl = document.getElementById('currentTime');
+const durationEl = document.getElementById('duration');
+
+function playTrack(track, queue = null) {
+  state.currentTrack = track;
+  if (queue) {
+    state.queueTracks = queue;
+    state.currentTrackIndex = queue.findIndex(t => t.id === track.id);
+  }
+
+  audio.src = track.url;
+  audio.load();
+  audio.play().then(() => {
+    state.isPlaying = true;
+    updatePlayBtn();
+    updatePlayerUI();
+    highlightActiveTrack();
+  }).catch(err => {
+    toast('Could not play this track. It may be unavailable.', 'error');
+    state.isPlaying = false;
+    updatePlayBtn();
+  });
+
+  // Media Session
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: track.title,
+      artist: track.artist,
+      album: state.collections.find(c => c.id === track.collectionId)?.title || 'Archival'
+    });
+  }
+}
+
+function stopPlayback() {
+  audio.pause();
+  audio.src = '';
+  state.isPlaying = false;
+  state.currentTrack = null;
+  updatePlayBtn();
+  updatePlayerUI();
+}
+
+function togglePlay() {
+  if (!state.currentTrack) return;
+  
+  if (state.isPlaying) { 
+    audio.pause(); 
+    state.isPlaying = false; 
+    updatePlayBtn(); // تحديث الزرار فوراً بعد الإيقاف
+  } else { 
+    audio.play().then(() => { 
+      state.isPlaying = true; 
+      updatePlayBtn(); // تحديث الزرار بعد ما التشغيل يبدأ فعلياً وتحديث الحالة
+    }); 
+  }
+}
+
+function updatePlayBtn() {
+  playBtn.innerHTML = state.isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
+}
+
+function updatePlayerUI() {
+  const t = state.currentTrack;
+  const colEl = document.getElementById('playerCollection');
+  
+  if (!t) {
+    document.getElementById('playerTitle').textContent = 'Select a track';
+    colEl.textContent = 'Import a collection to begin';
+    colEl.onclick = null;
+    document.getElementById('playerMeta').innerHTML = '';
+    document.getElementById('favBtn').innerHTML = '<i class="far fa-heart"></i>';
+    document.getElementById('favBtn').classList.remove('is-fav');
+    return;
+  }
+  
+  document.getElementById('playerTitle').textContent = t.title || 'Unknown Track';
+  const col = state.collections.find(c => c.id === t.collectionId);
+  colEl.textContent = col?.title || t.identifier || '';
+  
+  if (col) {
+    colEl.onclick = () => browseCollection(col.id);
+  } else {
+    colEl.onclick = null;
+  }
+
+  const meta = [];
+  if (t.artist) meta.push(`<span class="meta-chip"><i class="fas fa-user"></i> ${t.artist}</span>`);
+  if (t.duration) meta.push(`<span class="meta-chip"><i class="fas fa-clock"></i> ${formatTime(t.duration)}</span>`);
+  document.getElementById('playerMeta').innerHTML = meta.join('');
+
+  const isFav = state.favorites.has(t.id);
+  const favBtn = document.getElementById('favBtn');
+  favBtn.innerHTML = isFav ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>';
+  favBtn.classList.toggle('is-fav', isFav);
+}
+
+function highlightActiveTrack() {
+  document.querySelectorAll('.track-item').forEach(el => {
+    const isActive = el.dataset.trackId === state.currentTrack?.id;
+    el.classList.toggle('active', isActive);
+  });
+}
+
+audio.ontimeupdate = () => {
+  if (!audio.duration) return;
+  const pct = (audio.currentTime / audio.duration) * 100;
+  progressBar.value = pct;
+  const isDark = state.theme === 'dark';
+  const trackColor = '#C8A84B';
+  const trackBg = isDark ? '#252F2C' : '#E4E0D8';
+  progressBar.style.background = `linear-gradient(to right, ${trackColor} ${pct}%, ${trackBg} ${pct}%)`;
+  currentTimeEl.textContent = formatTime(audio.currentTime);
+  durationEl.textContent = formatTime(audio.duration);
+};
+
+progressBar.oninput = e => {
+  if (audio.duration) audio.currentTime = (e.target.value / 100) * audio.duration;
+};
+
+audio.onended = () => {
+  if (state.playbackMode === 'repeat') {
+    audio.currentTime = 0;
+    audio.play();
+    return;
+  }
+  if (state.playbackMode === 'shuffle') {
+    if (!state.queueTracks.length) return;
+    const idx = Math.floor(Math.random() * state.queueTracks.length);
+    playTrack(state.queueTracks[idx], state.queueTracks);
+    return;
+  }
+  // list mode
+  if (state.queueTracks.length && state.currentTrackIndex < state.queueTracks.length - 1) {
+    const next = state.queueTracks[state.currentTrackIndex + 1];
+    playTrack(next, state.queueTracks);
+  }
+};
+
+// ═══════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════
+function getFilteredTracks() {
+  const q = state.searchQuery.toLowerCase().trim();
+  let tracks = state.tab === 'favorites'
+    ? state.tracks.filter(t => state.favorites.has(t.id))
+    : state.tracks;
+    
+  if (state.tab === 'collection-detail' && state.focusedCollectionId) {
+    tracks = tracks.filter(t => t.collectionId === state.focusedCollectionId);
+  }
+    
+  if (q) tracks = tracks.filter(t =>
+    (t.title || '').toLowerCase().includes(q) ||
+    (t.artist || '').toLowerCase().includes(q) ||
+    (state.collections.find(c => c.id === t.collectionId)?.title || '').toLowerCase().includes(q)
+  );
+  return tracks;
+}
+
+function getFilteredCollections() {
+  const q = state.searchQuery.toLowerCase().trim();
+  if (!q) return state.collections;
+  return state.collections.filter(c =>
+    c.title.toLowerCase().includes(q) ||
+    (c.creator || '').toLowerCase().includes(q) ||
+    (c.subject || '').toLowerCase().includes(q)
+  );
+}
+
+function renderImportTab() {
+  return `
+    <div class="import-box">
+      <div class="import-title"><i class="fas fa-file-import"></i> Import from Internet Archive</div>
+      <div class="import-row">
+        <input type="text" class="import-input" id="importInput"
+          placeholder="archive.org/details/identifier or just the identifier…">
+        <button class="btn-primary" id="doImportBtn"><i class="fas fa-cloud-arrow-down"></i> Import</button>
+      </div>
+      <p class="import-hint">
+        Paste an <a href="https://archive.org" target="_blank">archive.org</a> item URL or identifier.
+        Example: <code>78_alice-blue-gown_1919</code> or full URL.
+        MP3s are preferred; duplicates are automatically skipped.
+      </p>
+    </div>
+    <div class="import-box" style="margin-top: 16px;">
+      <div class="import-title"><i class="fas fa-boxes-stacked"></i> Your Collections <span style="font-size:0.8rem;font-weight:400;color:var(--text-secondary);font-family:var(--font-ui);">(${state.collections.length})</span></div>
+      ${state.collections.length === 0 ? `
+        <div style="text-align:center;padding:32px 0;color:var(--text-secondary);">
+          <i class="fas fa-inbox" style="font-size:2rem;opacity:0.4;margin-bottom:12px;display:block;"></i>
+          No collections yet. Import one above.
+        </div>
+      ` : `
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          ${state.collections.map(c => `
+            <div style="display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--border);border-radius:10px;background:var(--bg-body);cursor:pointer;transition:var(--transition);" onclick="browseCollection('${c.id}')" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+              <div class="share-preview-thumb"><i class="fas fa-archive"></i></div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:0.9rem;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.title}</div>
+                <div style="font-size:0.75rem;color:var(--text-secondary);">${c.trackCount} tracks · ${c.identifier}</div>
+              </div>
+              <button class="btn-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="event.stopPropagation(); deleteCollectionPrompt('${c.id}')">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
+          `).join('')}
+        </div>
+      `}
+    </div>
+  `;
+}
+
+function renderCollectionsTab() {
+  const cols = getFilteredCollections();
+  if (cols.length === 0) {
+    return `
+      <div class="empty-state">
+        <div class="empty-icon"><i class="fas fa-boxes-stacked"></i></div>
+        <div class="empty-title">${state.searchQuery ? 'No results found' : 'No collections yet'}</div>
+        <div class="empty-desc">${state.searchQuery ? 'Try a different search term.' : 'Import a collection from the Import tab to get started.'}</div>
+      </div>`;
+  }
+
+  return `
+    <div class="section-header">
+      <h2 class="section-title">Collections</h2>
+      <span class="section-count">${cols.length}</span>
+    </div>
+    <div class="collections-grid">
+      ${cols.map(c => `
+        <div class="collection-card" onclick="browseCollection('${c.id}')">
+          <div class="collection-card-top">
+            <div class="collection-thumb">
+              <img src="${c.thumbnail}" alt="" onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\\'fas fa-archive\\'></i>'">
+            </div>
+            <div class="collection-info">
+              <div class="collection-name">${c.title}</div>
+              <div class="collection-subject">${c.subject || c.creator || c.identifier}</div>
+            </div>
+          </div>
+          <div class="collection-stats">
+            <span class="collection-stat"><i class="fas fa-music"></i> ${c.trackCount} tracks</span>
+            ${c.creator ? `<span class="collection-stat"><i class="fas fa-user"></i> ${c.creator}</span>` : ''}
+          </div>
+          <div class="collection-actions">
+            <button class="card-action-btn" title="Play all" onclick="event.stopPropagation();playCollection('${c.id}')"><i class="fas fa-play"></i></button>
+            <button class="card-action-btn danger" title="Delete" onclick="event.stopPropagation();deleteCollectionPrompt('${c.id}')"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+      `).join('')}
+    </div>`;
+}
+
+function renderCollectionDetailTab() {
+  const col = state.collections.find(c => c.id === state.focusedCollectionId);
+  if (!col) return `<div class="empty-state">Collection not found</div>`;
+
+  const filteredTracks = getFilteredTracks();
+
+  return `
+    <div class="collection-detail-wrap">
+      <div class="back-nav">
+        <button class="back-btn" onclick="closeCollectionDetail()"><i class="fas fa-arrow-left"></i> Back to Collections</button>
+      </div>
+      
+      <div class="collection-detail-header">
+        <div class="collection-detail-thumb">
+          ${col.thumbnail ? `<img src="${col.thumbnail}" alt="" onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\\'fas fa-archive\\'></i>'">` : '<i class="fas fa-archive"></i>'}
+        </div>
+        
+        <div class="collection-detail-info">
+          <div class="collection-detail-type">Collection</div>
+          <h1 class="collection-detail-title">${col.title}</h1>
+          
+          <div class="collection-detail-meta">
+            ${col.creator ? `<span><i class="fas fa-user" style="margin-right:4px;"></i> ${col.creator}</span> • ` : ''}
+            <span>${col.trackCount} tracks</span>
+            ${col.subject ? ` • <span>${col.subject}</span>` : ''}
+          </div>
+          
+          <div class="collection-detail-actions">
+            <button class="btn-primary" style="padding: 12px 28px; border-radius: var(--radius-full);" onclick="playCollection('${col.id}')">
+              <i class="fas fa-play"></i> Play All
+            </button>
+            <button class="btn-secondary" style="border-radius: var(--radius-full);" onclick="shuffleCollection('${col.id}')">
+              <i class="fas fa-shuffle"></i> Shuffle
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      ${renderTracksSection(filteredTracks, '')}
+    </div>
+  `;
+}
+
+function renderTracksSection(tracks, title = '') {
+  if (tracks.length === 0) {
+    return `
+      <div class="empty-state">
+        <div class="empty-icon"><i class="fas fa-music"></i></div>
+        <div class="empty-title">${state.searchQuery ? 'No tracks found' : 'Nothing here yet'}</div>
+        <div class="empty-desc">${state.searchQuery ? 'Try a different search.' : 'Import a collection to start listening.'}</div>
+      </div>`;
+  }
+
+  const start = (state.page - 1) * state.pageSize;
+  const paginated = tracks.slice(start, start + state.pageSize);
+  const totalPages = Math.ceil(tracks.length / state.pageSize);
+
+  const colMap = {};
+  state.collections.forEach(c => { colMap[c.id] = c; });
+
+  return `
+    ${title ? `<div class="section-header"><h2 class="section-title">${title}</h2><span class="section-count">${tracks.length}</span></div>` : ''}
+    <div class="tracks-section">
+      <div class="tracks-list">
+        ${paginated.map((t, i) => {
+          const isFav = state.favorites.has(t.id);
+          const isActive = state.currentTrack?.id === t.id;
+          const col = colMap[t.collectionId];
+          return `
+            <div class="track-item ${isActive ? 'active' : ''}" data-track-id="${t.id}" onclick="handleTrackClick('${t.id}', this)">
+              <div class="track-num">${start + i + 1}</div>
+              <div class="track-play-indicator">
+                <div class="playing-bars">
+                  <div class="playing-bar"></div><div class="playing-bar"></div><div class="playing-bar"></div>
+                </div>
+              </div>
+              <div class="track-thumb">
+                ${col?.thumbnail ? `<img src="${col.thumbnail}" alt="" onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\\'fas fa-music\\'></i>'">` : '<i class="fas fa-music"></i>'}
+              </div>
+              <div class="track-text">
+                <div class="track-name">${t.title || 'Unknown Track'}</div>
+                <div class="track-artist">${t.artist || col?.title || ''}</div>
+              </div>
+              ${t.duration ? `<div class="track-duration">${formatTime(t.duration)}</div>` : ''}
+              <button class="track-fav-btn ${isFav ? 'is-fav' : ''}" onclick="event.stopPropagation();handleFav('${t.id}',this)" title="${isFav ? 'Remove favorite' : 'Add favorite'}">
+                <i class="${isFav ? 'fas' : 'far'} fa-heart"></i>
+              </button>
+            </div>`;
+        }).join('')}
+      </div>
+    </div>
+    ${totalPages > 1 ? `
+      <div class="pagination">
+        <button class="page-btn" onclick="changePage(${state.page - 1})" ${state.page === 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i> Prev</button>
+        <span class="page-info">Page ${state.page} of ${totalPages}</span>
+        <button class="page-btn" onclick="changePage(${state.page + 1})" ${state.page === totalPages ? 'disabled' : ''}>Next <i class="fas fa-chevron-right"></i></button>
+      </div>` : ''}`;
+}
+
+function renderLibraryTab() {
+  const tracks = getFilteredTracks();
+  return renderTracksSection(tracks, 'All Tracks');
+}
+
+function renderFavoritesTab() {
+  const favTracks = state.tracks.filter(t => state.favorites.has(t.id)).filter(t => {
+    const q = state.searchQuery.toLowerCase().trim();
+    if (!q) return true;
+    return (t.title || '').toLowerCase().includes(q) || (t.artist || '').toLowerCase().includes(q);
+  });
+  return renderTracksSection(favTracks, 'Favorites');
+}
+
+function render() {
+  const content = document.getElementById('mainContent');
+  let html = '';
+  switch (state.tab) {
+    case 'library': html = renderLibraryTab(); break;
+    case 'collections': html = renderCollectionsTab(); break;
+    case 'favorites': html = renderFavoritesTab(); break;
+    case 'import': html = renderImportTab(); break;
+    case 'collection-detail': html = renderCollectionDetailTab(); break;
+  }
+  content.innerHTML = html;
+
+  if (state.tab === 'import') {
+    const btn = document.getElementById('doImportBtn');
+    const input = document.getElementById('importInput');
+    if (btn && input) {
+      btn.onclick = () => handleImport(input.value);
+      input.onkeydown = e => { if (e.key === 'Enter') handleImport(input.value); };
+    }
+  }
+  
+  // Manage Tabs visual state
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    const isActive = (state.tab === 'collection-detail' && btn.dataset.tab === 'collections') || (btn.dataset.tab === state.tab);
+    btn.classList.toggle('active', isActive);
+  });
+
+  highlightActiveTrack();
+}
+
+// ═══════════════════════════════════════════════
+// ACTIONS
+// ═══════════════════════════════════════════════
+window.handleTrackClick = function(trackId, el) {
+  const track = state.tracks.find(t => t.id === trackId);
+  if (!track) return;
+  const visibleTracks = getFilteredTracks();
+  const start = (state.page - 1) * state.pageSize;
+  const paginated = visibleTracks.slice(start, start + state.pageSize);
+  playTrack(track, visibleTracks);
+  render();
+};
+
+window.handleFav = async function(trackId, btn) {
+  await toggleFavorite(trackId);
+  const isFav = state.favorites.has(trackId);
+  btn.innerHTML = `<i class="${isFav ? 'fas' : 'far'} fa-heart"></i>`;
+  btn.classList.toggle('is-fav', isFav);
+  updatePlayerUI();
+  toast(isFav ? 'Added to favorites' : 'Removed from favorites', 'success');
+};
+
+window.browseCollection = function(collectionId) {
+  state.tab = 'collection-detail';
+  state.focusedCollectionId = collectionId;
+  state.searchQuery = '';
+  state.page = 1;
+  const searchInput = document.getElementById('searchInput');
+  searchInput.value = '';
+  searchInput.placeholder = 'Search this collection…';
+  
+  render();
+  // Scroll to content
+  setTimeout(() => document.getElementById('mainContent')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+};
+
+window.closeCollectionDetail = function() {
+  state.tab = 'collections';
+  state.focusedCollectionId = null;
+  state.page = 1;
+  state.searchQuery = '';
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchInput').placeholder = 'Search collections…';
+  render();
+};
+
+window.playCollection = function(collectionId) {
+  const tracks = state.tracks.filter(t => t.collectionId === collectionId);
+  if (!tracks.length) { toast('No tracks in this collection', 'warning'); return; }
+  playTrack(tracks[0], tracks);
+};
+
+window.shuffleCollection = function(colId) {
+  const tracks = state.tracks.filter(t => t.collectionId === colId);
+  if (!tracks.length) { toast('No tracks in this collection', 'warning'); return; }
+  const shuffled = [...tracks].sort(() => Math.random() - 0.5);
+  playTrack(shuffled[0], shuffled);
+  render();
+};
+
+window.deleteCollectionPrompt = async function(collectionId) {
+  const col = state.collections.find(c => c.id === collectionId);
+  const ok = await confirm('Delete Collection', `Are you sure you want to delete "${col?.title}"? This will remove all ${col?.trackCount} tracks.`);
+  if (ok) {
+    await deleteCollection(collectionId);
+    toast('Collection deleted', 'success');
+    render();
+  }
+};
+
+window.changePage = function(page) {
+  state.page = page;
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+async function handleImport(raw) {
+  if (!raw?.trim()) { toast('Please enter an identifier or URL', 'warning'); return; }
+  const btn = document.getElementById('doImportBtn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Importing…'; }
+
+  try {
+    const archiveData = await fetchArchiveCollection(raw);
+    
+    // Show preview
+    state.importPending = archiveData;
+    showImportPreview(archiveData);
+  } catch (err) {
+    toast(`Import failed: ${err.message}`, 'error', 5000);
+    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-cloud-arrow-down"></i> Import'; }
+  }
+}
+
+function showImportPreview(archiveData) {
+  const btn = document.getElementById('doImportBtn');
+  if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-cloud-arrow-down"></i> Import'; }
+
+  // Check for duplicates
+  const existingTracks = state.tracks.filter(t => t.identifier === archiveData.identifier);
+  const existingKeys = new Set(existingTracks.map(t => normalizeTitle(t.title)));
+  
+  const preview = archiveData.audioFiles.map(f => {
+    const key = normalizeTitle(f.title || f.name);
+    const isDup = existingKeys.has(key);
+    return { ...f, isDup };
+  });
+
+  const newCount = preview.filter(f => !f.isDup).length;
+  const dupCount = preview.filter(f => f.isDup).length;
+
+  document.getElementById('importPreviewTitle').textContent = `Import Preview`;
+  
+  document.getElementById('importPreviewContent').innerHTML = `
+    <div style="margin-bottom: 24px;">
+      <label style="display:block; font-size:0.78rem; font-weight:700; color:var(--text-secondary); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.05em;">Collection Title</label>
+      <input type="text" id="importCustomTitle" class="premium-input" value="${archiveData.title}">
+    </div>
+    
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+      <span class="meta-chip"><i class="fas fa-music"></i> ${archiveData.audioFiles.length} tracks</span>
+      <span class="meta-chip" style="color:#2A7A55;"><i class="fas fa-plus-circle"></i> ${newCount} new</span>
+      ${dupCount > 0 ? `<span class="meta-chip" style="color:#C8A84B;"><i class="fas fa-copy"></i> ${dupCount} duplicate${dupCount !== 1 ? 's' : ''}</span>` : ''}
+    </div>
+    
+    <div class="import-track-preview">
+      ${preview.slice(0, 30).map(f => `
+        <div class="import-track-row">
+          <i class="fas fa-${f.isDup ? 'copy' : 'file-audio'}" style="color:${f.isDup ? '#C8A84B' : 'var(--accent)'}"></i>
+          <span class="import-track-name">${f.title || cleanTitle(f.name)}</span>
+          <span class="import-track-badge ${f.isDup ? 'badge-dup' : 'badge-new'}">${f.isDup ? 'skip' : 'new'}</span>
+        </div>`).join('')}
+      ${preview.length > 30 ? `<div style="text-align:center;padding:12px;font-size:0.78rem;color:var(--text-secondary);">…and ${preview.length - 30} more</div>` : ''}
+    </div>`;
+
+  openModal('importPreviewModal');
+  document.getElementById('confirmImportBtn').onclick = async () => {
+    const customTitle = document.getElementById('importCustomTitle').value.trim() || archiveData.title;
+    closeModal('importPreviewModal');
+    await doImport(archiveData, customTitle);
+  };
+}
+
+async function doImport(archiveData, customTitle) {
+  try {
+    const result = await importCollection(archiveData, customTitle);
+    toast(`Imported ${result.added} tracks${result.skipped ? ` (${result.skipped} duplicates skipped)` : ''}`, 'success', 4000);
+    // Directly browse the newly imported collection
+    browseCollection(result.collectionId);
+  } catch (err) {
+    toast(`Error saving collection: ${err.message}`, 'error', 5000);
+  }
+}
+
+// ═══════════════════════════════════════════════
+// SHARING SYSTEM
+// ═══════════════════════════════════════════════
+function openShareModal() {
+  const list = document.getElementById('shareCollectionsList');
+  document.getElementById('shareLinkBox').style.display = 'none';
+  document.getElementById('shareLinkInput').value = '';
+
+  if (state.collections.length === 0) {
+    list.innerHTML = '<div style="text-align:center;padding:24px;color:var(--text-secondary);">No collections to share.</div>';
+    openModal('shareModal');
+    return;
+  }
+
+  list.innerHTML = state.collections.map(c => `
+    <div class="share-preview-item" onclick="this.classList.toggle('selected');this.querySelector('input').checked=!this.querySelector('input').checked">
+      <input type="checkbox" onclick="event.stopPropagation();this.closest('.share-preview-item').classList.toggle('selected',this.checked)">
+      <div class="share-preview-thumb"><i class="fas fa-archive"></i></div>
+      <div class="share-preview-info">
+        <div class="share-preview-name">${c.title}</div>
+        <div class="share-preview-tracks">${c.trackCount} tracks · ${c.identifier}</div>
+      </div>
+    </div>`).join('');
+
+  openModal('shareModal');
+}
+
+document.getElementById('generateLinkBtn').onclick = () => {
+  const selected = [...document.querySelectorAll('#shareCollectionsList .share-preview-item.selected')];
+  if (selected.length === 0) { toast('Select at least one collection', 'warning'); return; }
+
+  // تعديل هنا: هنجمع الـ identifier والـ title المخصص
+  const collectionData = selected.map(el => {
+    const name = el.querySelector('.share-preview-name').textContent;
+    const col = state.collections.find(c => c.title === name);
+    return col ? { id: col.identifier, title: col.title } : null;
+  }).filter(Boolean);
+
+  const payload = {
+    v: 2, // غيرنا الإصدار لـ 2 عشان نميز اللوجيك الجديد
+    cols: collectionData,
+    by: 'Archival'
+  };
+
+  const encoded = btoa(encodeURIComponent(JSON.stringify(payload))); // استخدمنا encodeURIComponent لدعم الحروف العربية في الأسماء
+  const url = `${window.location.origin}${window.location.pathname}?share=${encoded}`;
+  document.getElementById('shareLinkInput').value = url;
+  document.getElementById('shareLinkBox').style.display = 'flex';
+};
+
+document.getElementById('copyLinkBtn').onclick = () => {
+  const input = document.getElementById('shareLinkInput');
+  navigator.clipboard.writeText(input.value).then(() => {
+    toast('Link copied to clipboard!', 'success');
+  });
+};
+
+document.getElementById('selectAllShareBtn').onclick = () => {
+  const items = document.querySelectorAll('#shareCollectionsList .share-preview-item');
+  const allSelected = [...items].every(i => i.classList.contains('selected'));
+  items.forEach(i => {
+    i.classList.toggle('selected', !allSelected);
+    i.querySelector('input').checked = !allSelected;
+  });
+};
+
+async function checkSharedLink() {
+  const params = new URLSearchParams(window.location.search);
+  const shareParam = params.get('share');
+  if (!shareParam) return;
+
+  try {
+    // استخدمنا decodeURIComponent عشان نفك تشفير الحروف العربية لو موجودة
+    const payloadString = decodeURIComponent(atob(shareParam));
+    const payload = JSON.parse(payloadString);
+    
+    if (!payload.cols || !payload.cols.length) return;
+
+    // دعم الإصدارات القديمة والجديدة من اللينكات
+    const collectionsToImport = payload.cols.map(item => {
+      if (typeof item === 'string') return { id: item, title: item }; // الإصدار القديم
+      return item; // الإصدار الجديد {id, title}
+    });
+
+    // عرض القائمة بالأسماء المخصصة
+    const list = document.getElementById('sharedImportList');
+    list.innerHTML = collectionsToImport.map(col => `
+      <div class="share-preview-item selected" data-identifier="${col.id}" data-custom-title="${col.title}" onclick="this.classList.toggle('selected');this.querySelector('input').checked=!this.querySelector('input').checked">
+        <input type="checkbox" checked onclick="event.stopPropagation();this.closest('.share-preview-item').classList.toggle('selected',this.checked)">
+        <div class="share-preview-thumb"><i class="fas fa-archive"></i></div>
+        <div class="share-preview-info">
+          <div class="share-preview-name">${col.title}</div>
+          <div class="share-preview-tracks">Click Import to fetch metadata</div>
+        </div>
+      </div>`).join('');
+
+    openModal('sharedImportModal');
+
+    document.getElementById('importSharedBtn').onclick = async () => {
+      closeModal('sharedImportModal');
+      const selected = [...document.querySelectorAll('#sharedImportList .share-preview-item.selected')];
+      
+      if (!selected.length) { toast('No collections selected', 'warning'); return; }
+
+      toast(`Importing ${selected.length} collection(s)…`, 'info');
+      
+      for (const el of selected) {
+        const id = el.dataset.identifier;
+        const customTitle = el.dataset.customTitle;
+        
+        try {
+          const data = await fetchArchiveCollection(id);
+          // تمرير الاسم المخصص للدالة
+          await importCollection(data, customTitle);
+          toast(`Imported: ${customTitle}`, 'success');
+        } catch (e) {
+          toast(`Failed to import ${customTitle}: ${e.message}`, 'error');
+        }
+      }
+      render();
+      // تنظيف الـ URL بعد الاستيراد
+      window.history.replaceState({}, '', window.location.pathname);
+    };
+  } catch (e) {
+    toast('Invalid share link', 'error');
+    console.error(e);
+  }
+}
+
+// ═══════════════════════════════════════════════
+// JSON VIEW
+// ═══════════════════════════════════════════════
+document.getElementById('jsonBtn').onclick = () => {
+  const data = {
+    collections: state.collections,
+    tracksCount: state.tracks.length,
+    favoritesCount: state.favorites.size,
+    exportedAt: new Date().toISOString()
+  };
+  document.getElementById('jsonView').textContent = JSON.stringify(data, null, 2);
+  openModal('jsonModal');
+};
+
+document.getElementById('exportJsonBtn').onclick = () => {
+  const data = {
+    collections: state.collections,
+    tracks: state.tracks,
+    favorites: [...state.favorites],
+    exportedAt: new Date().toISOString()
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'archival-library.json';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('Library exported', 'success');
+};
+
+// ═══════════════════════════════════════════════
+// PLAYER CONTROLS
+// ═══════════════════════════════════════════════
+playBtn.onclick = togglePlay;
+
+document.getElementById('prevBtn').onclick = () => {
+  if (!state.queueTracks.length) return;
+  const idx = state.queueTracks.findIndex(t => t.id === state.currentTrack?.id);
+  if (idx > 0) playTrack(state.queueTracks[idx - 1], state.queueTracks);
+};
+
+document.getElementById('nextBtn').onclick = () => {
+  if (!state.queueTracks.length) return;
+  const idx = state.queueTracks.findIndex(t => t.id === state.currentTrack?.id);
+  if (idx < state.queueTracks.length - 1) playTrack(state.queueTracks[idx + 1], state.queueTracks);
+};
+
+document.getElementById('repeatBtn').onclick = function() {
+  const modes = ['list', 'repeat', 'shuffle'];
+  const curr = modes.indexOf(state.playbackMode);
+  state.playbackMode = modes[(curr + 1) % modes.length];
+  const icons = { list: 'fa-list-ul', repeat: 'fa-repeat', shuffle: 'fa-shuffle' };
+  this.innerHTML = `<i class="fas ${icons[state.playbackMode]}"></i>`;
+  this.classList.toggle('active', state.playbackMode !== 'list');
+  toast(`Playback: ${state.playbackMode}`, 'info');
+};
+
+document.getElementById('shuffleBtn').onclick = () => {
+  if (!state.tracks.length) return;
+  const randomTrack = state.tracks[Math.floor(Math.random() * state.tracks.length)];
+  playTrack(randomTrack, state.tracks);
+  render();
+};
+
+document.getElementById('favBtn').onclick = async () => {
+  if (!state.currentTrack) return;
+  await handleFav(state.currentTrack.id, document.getElementById('favBtn'));
+};
+
+document.getElementById('downloadBtn').onclick = () => {
+  if (state.currentTrack) window.open(state.currentTrack.url, '_blank');
+};
+
+document.getElementById('volBtn').onclick = function() {
+  if (audio.volume > 0) { audio.volume = 0; this.innerHTML = '<i class="fas fa-volume-xmark"></i>'; }
+  else { audio.volume = 1; this.innerHTML = '<i class="fas fa-volume-high"></i>'; }
+};
+
+// Media session
+if ('mediaSession' in navigator) {
+  navigator.mediaSession.setActionHandler('play', () => { audio.play(); state.isPlaying = true; updatePlayBtn(); });
+  navigator.mediaSession.setActionHandler('pause', () => { audio.pause(); state.isPlaying = false; updatePlayBtn(); });
+  navigator.mediaSession.setActionHandler('previoustrack', () => document.getElementById('prevBtn').click());
+  navigator.mediaSession.setActionHandler('nexttrack', () => document.getElementById('nextBtn').click());
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+  if (e.code === 'ArrowRight') { e.preventDefault(); document.getElementById('nextBtn').click(); }
+  if (e.code === 'ArrowLeft') { e.preventDefault(); document.getElementById('prevBtn').click(); }
+  if (e.code === 'ArrowUp') { e.preventDefault(); audio.volume = Math.min(1, audio.volume + 0.1); }
+  if (e.code === 'ArrowDown') { e.preventDefault(); audio.volume = Math.max(0, audio.volume - 0.1); }
+});
+
+// ═══════════════════════════════════════════════
+// THEME
+// ═══════════════════════════════════════════════
+function setTheme(t) {
+  state.theme = t;
+  document.documentElement.setAttribute('data-theme', t);
+  DB.setSetting('theme', t);
+  document.getElementById('themeBtn').innerHTML = t === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+  // Update progress bar color
+  if (audio.duration) audio.ontimeupdate();
+}
+
+document.getElementById('themeBtn').onclick = () => setTheme(state.theme === 'light' ? 'dark' : 'light');
+
+// ═══════════════════════════════════════════════
+// SEARCH & TABS
+// ═══════════════════════════════════════════════
+document.getElementById('searchInput').oninput = e => {
+  state.searchQuery = e.target.value;
+  state.page = 1;
+  render();
+};
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.onclick = () => {
+    state.tab = btn.dataset.tab;
+    state.focusedCollectionId = null; // Clear focused mode when clicking top tabs
+    state.page = 1;
+    state.searchQuery = '';
+    
+    const placeholders = { 
+      library: 'Search tracks, artists…', 
+      collections: 'Search collections…', 
+      favorites: 'Search favorites…', 
+      import: 'Search…' 
+    };
+    
+    const searchInput = document.getElementById('searchInput');
+    searchInput.value = '';
+    searchInput.placeholder = placeholders[state.tab] || 'Search…';
+    
+    render();
+  };
+});
+
+// ═══════════════════════════════════════════════
+// MODAL CLOSE HANDLERS
+// ═══════════════════════════════════════════════
+document.querySelectorAll('[data-close]').forEach(el => {
+  el.onclick = () => closeModal(el.dataset.close);
+});
+
+document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+  backdrop.onclick = e => { if (e.target === backdrop) closeModal(backdrop.id); };
+});
+
+document.getElementById('shareBtn').onclick = openShareModal;
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+async function init() {
+  await DB.open();
+  const savedTheme = await DB.getSetting('theme', 'light');
+  setTheme(savedTheme);
+  await loadLibrary();
+
+  // Set initial queue
+  state.queueTracks = state.tracks;
+  // ═══════════════════════════════════════════════
+  // SERVICE WORKER REGISTRATION
+  // ═══════════════════════════════════════════════
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => console.log('PWA: Service Worker registered successfully.', reg.scope))
+        .catch(err => console.error('PWA: Service Worker registration failed:', err));
+    });
+  }
+
+  render();
+  await checkSharedLink();
+}
+
+init().catch(err => {
+  console.error('Init error:', err);
+  toast('Failed to initialize database. Please refresh.', 'error', 6000);
+});
+</script>
+</body>
+</html>
