@@ -1695,7 +1695,7 @@ async function fetchCollectionData(raw) {
   }
 }
 
-// 1. Core Internet Archive Fetcher
+// 1. Core Internet Archive Fetcher (نفس الترتيب الأصلي للأرشيف بدون أي تعديل)
 async function fetchArchiveCollection(identifier) {
   identifier = identifier.trim();
   const match = identifier.match(/archive\.org\/(?:details|download)\/([^/?#\s]+)/i);
@@ -1716,6 +1716,8 @@ async function fetchArchiveCollection(identifier) {
 
   const seen = new Map();
   const deduped = [];
+  
+  // هنا بنسحب الملفات بنفس الترتيب اللي راجع من الأرشيف بالظبط
   for (const f of preferred) {
     const title = cleanTitle(f.name || f.title || 'Unknown');
     const key = normalizeTitle(title);
@@ -1963,12 +1965,13 @@ async function importCollection(archiveData, customTitle) {
 
   let added = 0, skipped = 0;
   const newTracks = [];
+  const existingTrackCount = existingTracks.length; // عشان لو ضفنا على كوليكشن قديم
 
   for (const f of archiveData.audioFiles) {
     const key = normalizeTitle(f.title || f.name);
     if (existingKeys.has(key)) { skipped++; continue; }
     existingKeys.add(key);
-    added++;
+    
     newTracks.push({
       id: uid(),
       collectionId,
@@ -1979,8 +1982,10 @@ async function importCollection(archiveData, customTitle) {
       duration: f.length ? parseFloat(f.length) : 0,
       size: f.size,
       filename: f.name,
-      importedAt: Date.now()
+      importedAt: Date.now(),
+      order: existingTrackCount + added // 🟢 هنا بنحفظ ترتيب المقطع الأصلي
     });
+    added++;
   }
 
   collection.trackCount = existingTracks.length + added;
@@ -2178,9 +2183,12 @@ function getFilteredTracks() {
     (t.artist || '').toLowerCase().includes(q) ||
     (state.collections.find(c => c.id === t.collectionId)?.title || '').toLowerCase().includes(q)
   );
+  
+  // 🟢 السطر السحري: ترتيب المقاطع بناءً على الـ order اللي حفظناه
+  tracks.sort((a, b) => (a.order || 0) - (b.order || 0));
+
   return tracks;
 }
-
 function getFilteredCollections() {
   const q = state.searchQuery.toLowerCase().trim();
   if (!q) return state.collections;
